@@ -77,6 +77,7 @@ pipeline {
                             export USE_GKE_GCLOUD_AUTH_PLUGIN=True
                             gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
                             gcloud config set project $GCP_PROJECT
+                            gcloud container clusters get-credentials $GKE_CLUSTER --zone $GCP_REGION --project $GCP_PROJECT
                         
                             kubectl apply -f ../k8s/deployment.yaml
                             kubectl apply -f ../k8s/service.yaml
@@ -105,6 +106,7 @@ pipeline {
                   export USE_GKE_GCLOUD_AUTH_PLUGIN=True
                   gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
                   gcloud config set project $GCP_PROJECT
+                  gcloud container clusters get-credentials $GKE_CLUSTER --zone $GCP_REGION --project $GCP_PROJECT
                   # Undo the last deployment rollout
                   kubectl rollout undo deployment/secure-app
                   
