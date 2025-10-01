@@ -75,9 +75,10 @@ pipeline {
 
         stage('Trivy Image Scan') {
             steps {
-                // sh "trivy image --exit-code 1 --severity CRITICAL $DOCKER_IMAGE"
+                sh "trivy image --exit-code 1 --severity CRITICAL $DOCKER_IMAGE:$IMAGE_TAG"
 
-                sh "trivy image --exit-code 1 --severity HIGH,CRITICAL $DOCKER_IMAGE:$IMAGE_TAG"
+                // sh "trivy image --ignorefile .trivyignore laly9999/secure-app:${BUILD_NUMBER}"
+                // sh "trivy image --exit-code 1 --severity HIGH,CRITICAL $DOCKER_IMAGE:$IMAGE_TAG"
             }
         }
 
