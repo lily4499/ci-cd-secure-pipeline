@@ -7,9 +7,9 @@ pipeline {
         REGISTRY_CREDENTIALS = credentials('dockerhub-credentials')
         SLACK_WEBHOOK        = credentials('slack-webhook')
 
-        // GCP_PROJECT  = "x-object-472022-q2"
-        // GCP_REGION     = "us-east4"
-        // GKE_CLUSTER  = "demo-autopilot"
+        GCP_PROJECT  = "x-object-472022-q2"
+        GCP_REGION     = "us-east4"
+        GKE_CLUSTER  = "demo-autopilot"
     }
 
     stages {
@@ -74,8 +74,11 @@ pipeline {
                 dir('helm-chart') {
                     withCredentials([file(credentialsId: 'gcp-sa-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                         sh """
-                            kubectl apply --validate=false -f ../k8s/deployment.yaml
-                           # kubectl apply -f ../k8s/deployment.yaml
+                            export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+                            gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+                            gcloud config set project $GCP_PROJECT
+                        
+                            kubectl apply -f ../k8s/deployment.yaml
                             kubectl apply -f ../k8s/service.yaml
                             kubectl set image deployment/secure-app secure-app=laly9999/secure-app:${BUILD_NUMBER}
                             kubectl rollout status deployment/secure-app
@@ -99,6 +102,9 @@ pipeline {
             echo "Deployment failed ❌ → Rolling back..."
             withCredentials([file(credentialsId: 'gcp-sa-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                 sh """
+                  export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+                  gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+                  gcloud config set project $GCP_PROJECT
                   # Undo the last deployment rollout
                   kubectl rollout undo deployment/secure-app
                   
