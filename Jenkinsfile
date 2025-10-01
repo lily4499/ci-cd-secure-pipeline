@@ -9,7 +9,7 @@ pipeline {
 
         GCP_PROJECT  = "x-object-472022-q2"
         GCP_ZONE     = "us-east4-a"
-        GKE_CLUSTER  = "gke-demo"
+        GKE_CLUSTER  = "demo-autopilot"
     }
 
     stages {
