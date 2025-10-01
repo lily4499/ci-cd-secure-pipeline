@@ -37,19 +37,19 @@ pipeline {
                 dir('app') {   // 👈 run commands inside app/
                     withSonarQubeEnv('MySonar') {
                         sh '''
-                            // # Run tests with coverage inside app/
-                            // npm test -- --coverage --coverageReporters=lcov
+                            # Run tests with coverage inside app/
+                            # npm test -- --coverage --coverageReporters=lcov
         
                             # Run SonarQube analysis
                             ${scannerHome}/bin/sonar-scanner \
                               -Dsonar.projectKey=secure-app \
-                              -Dsonar.sources=app \
-                              -Dsonar.host.url=http://localhost:9000 
-                            //   -Dsonar.projectKey=sonar-app-key \
-                            //   -Dsonar.sources=. \
-                            //   -Dsonar.tests=__tests__ \
-                            //   -Dsonar.test.inclusions=__tests__/**/*.test.js \
-                            //   -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+                              -Dsonar.sources=. \
+                   
+                            #   -Dsonar.projectKey=sonar-app-key \
+                            #   -Dsonar.sources=. \
+                            #   -Dsonar.tests=__tests__ \
+                            #   -Dsonar.test.inclusions=__tests__/**/*.test.js \
+                            #   -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
                         '''
                     }
                 }
@@ -124,9 +124,9 @@ pipeline {
                             kubectl set image deployment/secure-app secure-app=laly9999/secure-app:${BUILD_NUMBER}
                             kubectl rollout status deployment/secure-app
 
-                            // helm upgrade --install prod-cicd . \
-                            //   --set image.repository=$DOCKER_IMAGE \
-                            //   --set image.tag=$IMAGE_TAG
+                            # helm upgrade --install prod-cicd . \
+                            #   --set image.repository=$DOCKER_IMAGE \
+                            #   --set image.tag=$IMAGE_TAG
                         """
                     }
                 }
