@@ -74,8 +74,8 @@ pipeline {
                 dir('helm-chart') {
                     withCredentials([file(credentialsId: 'gcp-sa-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                         sh """
-                            kubectl apply -f k8s/deployment.yaml
-                            kubectl apply -f k8s/service.yaml
+                            kubectl apply -f ../k8s/deployment.yaml
+                            kubectl apply -f ../k8s/service.yaml
                             kubectl set image deployment/secure-app secure-app=laly9999/secure-app:${BUILD_NUMBER}
                             kubectl rollout status deployment/secure-app
 
